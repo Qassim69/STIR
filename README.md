@@ -10,9 +10,7 @@
 
 ## 💡 The Problem
 
-It's 3 AM. You're deep in a flow state. The code is *finally* making sense. You pour yourself a hot tea, drop in two sugars, and then... you stand there. Spoon in hand. Stirring. Like a peasant. 
-
-Every second your eyes are off the screen, your mental model collapses. The bugs multiply. The stack overflows — **in your brain.**
+It's 3 AM. You're deep in a flow state. The code is *finally* making sense. You pour yourself a hot tea, drop in two sugars, and then... you stand there. Spoon in hand. Stirring.
 
 **Enter STIR.** 🌀
 
@@ -32,12 +30,11 @@ We use the **SO-101 Robot Arm** from [LeRobot by Hugging Face](https://huggingfa
 
 The decision-making is powered by **[SmolVLA](https://huggingface.co/docs/lerobot/smolvla)**, Hugging Face's compact Vision-Language-Action model.
 
-- **Pre-training**: Trained across **40+ diverse robotics datasets** to build a solid understanding of spatial reasoning and object manipulation
-- **Fine-tuning**: We ran custom training for **6–7 hours** on coffee and tea stirring demonstrations — different mugs, liquid levels, sugar quantities, and condiments (sugar, honey, milk, sweeteners... we don't judge your order)
+- **Pre-training**: Trained across **40+ robotics datasets** to build a solid understanding of spatial reasoning and object manipulation
+- **Fine-tuning**: We ran custom training for **6–7 hours** on stirring demonstrations.
 - **Multimodal Inputs**: SmolVLA takes in:
   - 📷 Camera feed (watching the mug and spoon)
   - 🦿 Robot joint states (knowing where the arm is)
-  - 💬 A natural language prompt (e.g. *"2 spoons of sugar, stir the tea"*)
 
 ### ⚡ The Secret Sauce: Real-Time Chunking (RTC)
 
@@ -50,50 +47,6 @@ No stuttering. No pausing. Just smooth, hypnotic stirring.
 ---
 
 ## 🚀 Getting Started
-
-### 📥 1. Installation
-
-Clone the repo and install LeRobot with SmolVLA dependencies:
-
-```bash
-git clone https://github.com/Qassim69/STIR.git
-cd STIR
-pip install -e ".[smolvla]"
-```
-
-> For full LeRobot setup instructions, check the [official docs](https://huggingface.co/docs/lerobot/installation).
-
-### ☕ 2. Run the Stirring Policy
-
-Connect your SO-101 arm and camera, then fire it up:
-
-```bash
-lerobot-record \
-  --robot.type=so101_follower \
-  --robot.port=/dev/ttyACM0 \
-  --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30} }" \
-  --dataset.single_task="Stir 2 spoons of sugar into the coffee cup" \
-  --policy.path=your-huggingface-username/smolvla-stir \
-  --dataset.episode_time_s=30 \
-  --dataset.num_episodes=1
-```
-
-### 🔧 3. RTC Configuration
-
-RTC is enabled by default. Tweak it to your stirring needs:
-
-```python
-from lerobot.policies.rtc.configuration_rtc import RTCConfig
-
-rtc_config = RTCConfig(
-    enabled=True,
-    execution_horizon=10,          # Blend last 10 steps for smooth transitions
-    max_guidance_weight=10.0,      # Keep it tight — no spills allowed
-    prefix_attention_schedule="EXP"  # Exponential decay blending
-)
-```
-
----
 
 ## 📈 Training Details
 
