@@ -82,17 +82,17 @@ Once your environment and SO-101 arm are configured, the next step is to **colle
 
 The workflow looks like this:
 
-1. **Teleoperate** the SO-101 leader arm to physically demonstrate the stirring task across multiple episodes (different mug positions, sugar quantities, condiments)
+1. **Teleoperate** the SO-101 leader arm to physically demonstrate the stirring task across multiple episodes
 2. **Record the dataset** — LeRobot captures camera frames, joint states, and actions automatically
-3. **Push the dataset** to Hugging Face Hub for training
+3. **Push the dataset** to Hugging Face Hub for training or store locally for training on your GPU
 4. **Train the SmolVLA policy** using the collected data
 
 #### 💪 Training Compute Options
 
 You have two options for the training step:
 
-- **Local GPU** — If you have a powerful NVIDIA GPU (e.g. RTX 3090 / 4090), you can train directly on your machine. Expect ~6–7 hours for a well-converged stirring policy.
-- **Hugging Face Cloud** ☁️ — No beefy GPU? No problem. You can push your dataset to the Hub and use [Hugging Face's ZeroGPU / training servers](https://huggingface.co) to access stronger compute without burning your electricity bill.
+- **Local GPU** — If you have a powerful NVIDIA GPU (e.g. RTX 4090), you can train directly on your machine. Expect ~6–7 hours for a well-converged stirring policy.
+- **Hugging Face Cloud** ☁️ — No beefy GPU? No problem. You can push your dataset to the Hub and use [Hugging Face's ZeroGPU / training servers](https://huggingface.co) to access stronger compute
 
 ---
 
@@ -102,7 +102,7 @@ Once training is complete and your model is available (locally or on the Hub), d
 
 ```bash
 lerobot-rollout --strategy.type=base \
-  --policy.path=dd-template/smolvla_spoon_stir \
+  --policy.path=Username/smolvla_spoon_stir \
   --inference.type=rtc \
   --inference.rtc.execution_horizon=16 \
   --inference.rtc.max_guidance_weight=10.0 \
