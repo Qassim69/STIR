@@ -87,6 +87,9 @@ The workflow looks like this:
 3. **Push the dataset** to Hugging Face Hub for training or store locally for training on your GPU
 4. **Train the SmolVLA policy** using the collected data
 
+> 📂 Our training dataset is publicly available on Hugging Face:  
+> **[ohdoking/spoon-record-merged-v2](https://huggingface.co/datasets/ohdoking/spoon-record-merged-v2)**
+
 #### 💪 Training Compute Options
 
 You have two options for the training step:
@@ -98,11 +101,14 @@ You have two options for the training step:
 
 ### 🤖 Step 3 — Deploy the Policy on the SO-101
 
-Once training is complete and your model is available (locally or on the Hub), deploy it on the robot using `lerobot-rollout` with RTC inference:
+Once training is complete, you can use our pre-trained model directly or swap in your own. Deploy it on the robot using `lerobot-rollout` with RTC inference:
+
+> 🧠 Our trained model is available on Hugging Face:  
+> **[dd-template/smolvla_spoon_stir](https://huggingface.co/dd-template/smolvla_spoon_stir)**
 
 ```bash
 lerobot-rollout --strategy.type=base \
-  --policy.path=Username/smolvla_spoon_stir \
+  --policy.path=dd-template/smolvla_spoon_stir \
   --inference.type=rtc \
   --inference.rtc.execution_horizon=16 \
   --inference.rtc.max_guidance_weight=10.0 \
@@ -123,6 +129,8 @@ lerobot-rollout --strategy.type=base \
 | Detail | Value |
 |---|---|
 | Base Model | `smolvla_base` |
+| Trained Model | [dd-template/smolvla_spoon_stir](https://huggingface.co/dd-template/smolvla_spoon_stir) |
+| Training Dataset | [ohdoking/spoon-record-merged-v2](https://huggingface.co/datasets/ohdoking/spoon-record-merged-v2) |
 | Datasets Used | 40+ robotics datasets |
 | Fine-tuning Time | ~6–7 hours |
 | Hardware | SO-101 Follower Arm + webcam |
