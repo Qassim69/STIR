@@ -136,4 +136,12 @@ Want to extend STIR to dip biscuits 🍪, froth milk 🥛, or add a splash of oa
 
 ---
 
+## 🎬 STIR in Action
+
+Watch the SO-101 arm do what you're too busy to do yourself — stir the perfect cup. ☕
+
+https://github.com/user-attachments/assets/1866a2d6-725a-49ec-bab8-deb2945da2ea
+
+---
+
 *Built with caffeine, curiosity, and a mild obsession with not interrupting flow states.* ☕💻
