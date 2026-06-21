@@ -48,6 +48,76 @@ No stuttering. No pausing. Just smooth, hypnotic stirring.
 
 ## 🚀 Getting Started
 
+> **Note:** You are not cloning this repository to run STIR — you are setting up the **LeRobot framework**, collecting your own demonstrations, training a SmolVLA policy, and deploying it on your SO-101. This repo documents our approach and serves as a reference. Follow the steps below in order.
+
+---
+
+### 🖥️ Step 1 — Set Up Your Environment (WSL)
+
+STIR was developed and tested on **Windows Subsystem for Linux (WSL)**. Start by setting up LeRobot inside a WSL environment by following the official installation guide:
+
+👉 [LeRobot Installation Guide](https://huggingface.co/docs/lerobot/installation)
+
+This covers:
+- Setting up WSL and a compatible Python environment
+- Cloning the **LeRobot repository** (not this one)
+- Installing all core dependencies and hardware drivers for the SO-101 arm
+
+```bash
+# Clone LeRobot's official repository
+git clone https://github.com/huggingface/lerobot.git
+cd lerobot
+
+# Install with SmolVLA support
+pip install -e ".[smolvla]"
+```
+
+---
+
+### 🎓 Step 2 — Collect Data & Train via Imitation Learning
+
+Once your environment and SO-101 arm are configured, the next step is to **collect demonstration episodes** and train the SmolVLA policy using Imitation Learning.
+
+👉 [Imitation Learning with LeRobot](https://huggingface.co/docs/lerobot/il_robots)
+
+The workflow looks like this:
+
+1. **Teleoperate** the SO-101 leader arm to physically demonstrate the stirring task across multiple episodes (different mug positions, sugar quantities, condiments)
+2. **Record the dataset** — LeRobot captures camera frames, joint states, and actions automatically
+3. **Push the dataset** to Hugging Face Hub for training
+4. **Train the SmolVLA policy** using the collected data
+
+#### 💪 Training Compute Options
+
+You have two options for the training step:
+
+- **Local GPU** — If you have a powerful NVIDIA GPU (e.g. RTX 3090 / 4090), you can train directly on your machine. Expect ~6–7 hours for a well-converged stirring policy.
+- **Hugging Face Cloud** ☁️ — No beefy GPU? No problem. You can push your dataset to the Hub and use [Hugging Face's ZeroGPU / training servers](https://huggingface.co) to access stronger compute without burning your electricity bill.
+
+---
+
+### 🤖 Step 3 — Deploy the Policy on the SO-101
+
+Once training is complete and your model is available (locally or on the Hub), deploy it on the robot using `lerobot-rollout` with RTC inference:
+
+```bash
+lerobot-rollout --strategy.type=base \
+  --policy.path=dd-template/smolvla_spoon_stir \
+  --inference.type=rtc \
+  --inference.rtc.execution_horizon=16 \
+  --inference.rtc.max_guidance_weight=10.0 \
+  --interpolation_multiplier=2 \
+  --robot.type=so101_follower --robot.port=/dev/tty.usbmodemXXXX \
+  --robot.cameras="{ camera1: {type: opencv, index_or_path: 0, width: 1920, height: 1080, fps: 30}}" \
+  --task="Stir the cup" --use_torch_compile=true --duration=60
+```
+
+> 🔌 Replace `/dev/tty.usbmodemXXXX` with the actual serial port of your connected SO-101 arm.  
+> 📷 The camera is configured at **1920×1080 @ 30fps** for high-fidelity visual input.  
+> ⏱️ Each rollout runs for **60 seconds** — more than enough time for a perfectly stirred cup.
+
+---
+
 ## 📈 Training Details
 
 | Detail | Value |
