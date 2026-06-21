@@ -56,7 +56,7 @@ No stuttering. No pausing. Just smooth, hypnotic stirring.
 | Datasets Used | 40+ robotics datasets |
 | Fine-tuning Time | ~6–7 hours |
 | Hardware | SO-101 Follower Arm + webcam |
-| Tasks Covered | Stirring coffee & tea with sugar, honey, milk, and other condiments |
+| Tasks Covered | Stirring coffee & tea with sugar |
 
 ---
 
